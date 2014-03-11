@@ -1,0 +1,28 @@
+{
+  "name": "unit-testing-angular-directives",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "drborges/unit-testing-angular-directives"
+  },
+  "author": {
+    "name": "Diego Borges",
+    "email": "drborges.cic@gmail.com"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "tiny-lr": "0.0.5",
+    "gulp-shell": "~0.2.4",
+    "gulp": "~3.5.5",
+    "mocha": "~1.17.1",
+    "mocha-phantomjs": "~3.3.2"
+  },
+  "scripts": {
+    "test": "",
+    "coveralls": ""
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": ">= 0.9"
+  }
+}

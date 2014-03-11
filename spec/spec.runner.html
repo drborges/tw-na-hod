@@ -1,0 +1,36 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>ng-sort-by Spec</title>
+  <link rel="stylesheet" href="../vendor/mocha/mocha.css" />
+
+</head>
+
+<body>
+  <div id="mocha"></div>
+
+  <script type="text/javascript" src="../vendor/chai/chai.js"></script>
+  <script type="text/javascript" src="../vendor/mocha/mocha.js"></script>
+  <script type="text/javascript" src="../vendor/sinonjs/sinon.js"></script>
+  <script type="text/javascript" src="../vendor/sinon-chai/lib/sinon-chai.js"></script>
+  <script type="text/javascript">
+    mocha.checkLeaks();
+    expect = chai.expect;
+    mocha.ui('bdd');
+  </script>
+  <script type="text/javascript" src="../vendor/angular/angular.js"></script>
+  <script type="text/javascript" src="../vendor/angular-mocks/angular-mocks.js"></script>
+
+  <script type="text/javascript" src="../lib/directive.demo.js"></script>
+
+  <script type="text/javascript" src="unit/directive.demo.spec.js"></script>
+  <script type="text/javascript">
+    if (window.mochaPhantomJS) {
+        mochaPhantomJS.run();
+    }
+    else { mocha.run(); }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html ng-app="example">
+<head>
+  <title></title>
+  <script type="text/javascript" src="../vendor/angular/angular.js"></script>
+  <script type="text/javascript" src="../lib/directive.demo.js"></script>
+  <script type="text/javascript">
+    angular.module('example', ['directive-demo'])
+      .controller('FormCtrl', function () {
+        this.saveAsDraft = function (formData) {
+          console.log('saving:', formData);
+        };
+      });
+  </script>
+</head>
+<body ng-controller="FormCtrl as form">
+  <form autosave="form.saveAsDraft(formData)" ng-model="formData">
+    <input type="text" ng-model="formData.name" />
+    <input type="text" ng-model="formData.email" />
+  </form>
+</body>
+</html>
