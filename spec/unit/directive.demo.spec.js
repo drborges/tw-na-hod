@@ -109,9 +109,19 @@ describe ('directive-demo', function () {
 
     it ('does not auto saves model if predicate is not met', function () {
       var template = '<form tw-autosave="saveAsDraft(formData)" tw-if="{{ 1 === 2 }}" ng-model="formData">Clone</button>';
-      var element = $compile(template)($scope);
+      $compile(template)($scope);
 
       $scope.formData.name = 'Diego Borges';
+      $scope.$digest();
+
+      expect(debouncer.debounce).to.not.have.been.called;
+    });
+
+    it ('does not trigger callback if model new value is "undefined"', function () {
+      var template = '<form tw-autosave="saveAsDraft(formData)" ng-model="formData">Clone</button>';
+      $compile(template)($scope);
+
+      $scope.formData = undefined;
       $scope.$digest();
 
       expect(debouncer.debounce).to.not.have.been.called;
