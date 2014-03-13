@@ -76,6 +76,19 @@ describe ('directive-demo', function () {
 
       expect($scope.target).to.deep.equal({ id: 1, message: 'cloned message' });
     });
+
+    it ('set tw-dest-model equals to a copy of tw-src-model when tw-dest-model is not yet defined', function () {
+      $scope.target = undefined;
+      var element = $compile(template)($scope);
+      element.triggerHandler('click');
+
+      expect($scope.target).to.deep.equal({ message: 'cloned message' });
+
+      $scope.template.message = 'updated message';
+      $scope.$digest();
+
+      expect($scope.target).to.deep.equal({ message: 'cloned message' });
+    });
   });
 
   describe ('twAutosave', function () {

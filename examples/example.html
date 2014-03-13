@@ -6,17 +6,45 @@
   <script type="text/javascript" src="../lib/directive.demo.js"></script>
   <script type="text/javascript">
     angular.module('example', ['directive-demo'])
-      .controller('FormCtrl', function () {
+      .controller('FormCtrl', function ($scope) {
+        this.users = {
+          diego: { name: 'Diego Borges', email: 'dborges@thoughtworks.com' },
+          tim: { name: 'Tim Cochran', email: 'tim.cochran@thoughtworks.com' },
+          matt: { name: 'Matt Weems', email: 'mattw@thoughtworks.com' }
+        };
         this.saveAsDraft = function (formData) {
           console.log('saving:', formData);
+          $scope.lastSave = angular.copy(formData);
         };
       });
   </script>
 </head>
 <body ng-controller="FormCtrl as form">
-  <form tw-autosave="form.saveAsDraft(formData)" ng-model="formData">
-    <input type="text" ng-model="formData.name" />
-    <input type="text" ng-model="formData.email" />
+  <div>
+    <a href="#"
+       tw-clone
+       tw-src-model="form.users.diego"
+       tw-dest-model="user" class="clone">Diego</a>
+    <a href="#"
+       tw-clone
+       tw-src-model="form.users.tim"
+       tw-dest-model="user" class="clone">Tim</a>
+    <a href="#"
+       tw-clone
+       tw-src-model="form.users.matt"
+       tw-dest-model="user" class="clone">Matt</a>
+  </div>
+
+  <form tw-autosave="form.saveAsDraft(user)" ng-model="user">
+    <input type="text" ng-model="user.name" />
+    <input type="text" ng-model="user.email" />
   </form>
+
+  <div>
+    <h4>Last Triggered Auto-Save</h4>
+    <p>Name: {{lastSave.name}}</p>
+    <p>Email: {{lastSave.email}}</p>
+  </div>
+
 </body>
 </html>
