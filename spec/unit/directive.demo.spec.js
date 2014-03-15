@@ -1,34 +1,38 @@
-describe ('directive-demo', function () {
-  var $scope,
-      $compile;
+describe ('HODApp', function () {
 
-  beforeEach(angular.mock.module('directive-demo'));
 
-  describe('Debouncer', function () {
-    var debouncer, $timeout;
 
-    beforeEach(inject(function (Debouncer, _$timeout_) {
-      debouncer = Debouncer;
+  describe('TwFunctional.Debouncer', function () {
+    var Debouncer, $timeout;
+
+    beforeEach(module('TwFunctional'));
+    beforeEach(inject(function (_Debouncer_, _$timeout_) {
+      Debouncer = _Debouncer_;
       $timeout = _$timeout_;
     }));
 
     it ('debounces callback for multiple calls within 300 ms', function () {
       var fn = sinon.spy();
 
-      debouncer.debounce(fn, 300);
+      Debouncer.debounce(fn, 300);
       $timeout.flush(100);
-      debouncer.debounce(fn, 300);
+      Debouncer.debounce(fn, 300);
       $timeout.flush(100);
-      debouncer.debounce(fn, 300);
+      Debouncer.debounce(fn, 300);
       $timeout.flush();
 
       expect(fn).to.have.been.calledOnce;
    });
   });
 
-  describe ('twClone', function () {
-    var template = '<button tw-clone tw-src-model="template" tw-dest-model="target" tw-on="click">Clone</button>';
 
+
+  describe ('TwModelClone.TwClone', function () {
+    var $scope,
+        $compile,
+        template = '<button tw-clone tw-src-model="template" tw-dest-model="target" tw-on="click">Clone</button>';
+
+    beforeEach(module('TwModelClone'));
     beforeEach(inject(function (_$compile_, $rootScope) {
       $compile = _$compile_;
       $scope = $rootScope.$new();
@@ -77,7 +81,7 @@ describe ('directive-demo', function () {
       expect($scope.target).to.deep.equal({ id: 1, message: 'cloned message' });
     });
 
-    it ('set tw-dest-model equals to a copy of tw-src-model when tw-dest-model is not yet defined', function () {
+    it ('set tw-dest-model to a copy of tw-src-model when tw-dest-model is not yet defined', function () {
       $scope.target = undefined;
       var element = $compile(template)($scope);
       element.triggerHandler('click');
@@ -91,9 +95,14 @@ describe ('directive-demo', function () {
     });
   });
 
-  describe ('twAutosave', function () {
-    var debouncer;
 
+
+  describe ('TwForm.twAutosave', function () {
+    var $scope,
+        $compile,
+        debouncer;
+
+    beforeEach(module('TwForm'));
     beforeEach(module(function($provide) {
       debouncer = { debounce: sinon.spy() };
       $provide.factory('Debouncer', function () { return debouncer });
@@ -138,6 +147,25 @@ describe ('directive-demo', function () {
       $scope.$digest();
 
       expect(debouncer.debounce).to.not.have.been.called;
+    });
+  });
+
+
+
+  describe('twUserProfile', function () {
+    beforeEach(module('TwUserProfile'));
+    beforeEach(function () {
+      $scope.user = {
+        name: 'Diego Borges',
+        email: 'dborges@thoughtworks.com',
+        role: 'Dev',
+        tags: ['angularjs', 'devops', 'CD', 'infra-as-code', 'python', 'nodejs']
+      };
+    });
+
+    xit ('', function () {
+      var template = '<tw-user-profile tw-auto-save-enabled="true" ng-model="user" />';
+      var element = $compile(template)($scope);
     });
   });
 });

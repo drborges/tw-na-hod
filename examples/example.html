@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html ng-app="example">
+<html ng-app="HODApp">
 <head>
   <title></title>
   <script type="text/javascript" src="../vendor/angular/angular.js"></script>
   <script type="text/javascript" src="../lib/directive.demo.js"></script>
   <script type="text/javascript">
-    angular.module('example', ['directive-demo'])
+    angular.module('HODApp', ['TwForm', 'TwModelClone', 'TwUserProfile'])
       .controller('FormCtrl', function ($scope) {
         this.users = {
           diego: { name: 'Diego Borges', email: 'dborges@thoughtworks.com' },
-          tim: { name: 'Tim Cochran', email: 'tim.cochran@thoughtworks.com' },
-          matt: { name: 'Matt Weems', email: 'mattw@thoughtworks.com' }
+          tim:   { name: 'Tim Cochran',  email: 'tim.cochran@thoughtworks.com' },
+          matt:  { name: 'Matt Weems',   email: 'mattw@thoughtworks.com' }
         };
+
         this.saveAsDraft = function (formData) {
           console.log('saving:', formData);
           $scope.lastSave = angular.copy(formData);
@@ -42,9 +43,9 @@
 
   <div>
     <h4>Last Triggered Auto-Save</h4>
-    <p>Name: {{lastSave.name}}</p>
-    <p>Email: {{lastSave.email}}</p>
+    <tw-user-profile ng-model="lastSave"></tw-user-profile>
+    <tw-user-profile ng-model="lastSave"></tw-user-profile>
+    <tw-user-profile ng-model="lastSave"></tw-user-profile>
   </div>
-
 </body>
 </html>
