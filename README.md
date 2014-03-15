@@ -9,6 +9,7 @@ HOD - AngularJS Dark Magic
 - npm
 - bower
 - mocha
+- phatomjs
 - mocha-phantomjs
 - gulp
 
@@ -17,27 +18,35 @@ HOD - AngularJS Dark Magic
 ```bash
 $ git clone https://github.com/drborges/unit-testing-angular-directives.git hod
 $ cd hod
-$ npm install -g mocha mocha-phantomjs gulp
+$ npm install -g mocha mocha-phantomjs gulp phantomjs
 $ npm install
 $ bower install
 ```
 
 # Running the Specs
 
-- Single run:
+Single run:
 
 ```bash
 $ gulp spec
 ```
 
-- Continuously Testing:
+Continuously Testing:
 
 ```bash
 $ gulp watch
 ```
 
-- Mocha runner in the browser:
+Mocha runner in the browser:
 
 ```bash
 $ open spec/spec.runner.html
+```
+
+# Examples
+
+Check the examples under the example directory:
+
+```bash
+$ open examples/example.html
 ```
