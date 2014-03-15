@@ -8,6 +8,9 @@
       padding-top: 15px;
       padding-bottom: 15px;
     }
+    .user-addon {
+      top: 0px;
+    }
   </style>
 
   <script type="text/javascript" src="../vendor/angular/angular.js"></script>
@@ -18,9 +21,12 @@
         this.form = {};
         this.lastSavedUser;
         this.users = [
-          { name: 'Diego Borges', email: 'dborges@thoughtworks.com' },
-          { name: 'Tim Cochran',  email: 'tim.cochran@thoughtworks.com' },
-          { name: 'Matt Weems',   email: 'mattw@thoughtworks.com' }
+          { name: 'Diego Borges',     email: 'dborges@thoughtworks.com' },
+          { name: 'Tim Cochran',      email: 'tcochran@thoughtworks.com' },
+          { name: 'Matt Weems',       email: 'mweems@thoughtworks.com' },
+          { name: 'Dan Lockman',      email: 'dlockman@thoughtworks.com' },
+          { name: 'Igor Lilic',       email: 'ililic@thoughtworks.com' },
+          { name: 'Stephanie Jacobs', email: 'sjacobs@thoughtworks.com' }
         ];
 
         this.saveAsDraft = function (formData) {
@@ -46,7 +52,7 @@
     <div class="form">
       <form tw-autosave="formCtrl.saveAsDraft(formCtrl.form)" ng-model="formCtrl.form" role="form">
         <div class="form-group input-group">
-          <span class="input-group-addon glyphicon glyphicon-user"></span>
+          <span class="input-group-addon glyphicon glyphicon-user user-addon"></span>
           <input type="text" ng-model="formCtrl.form.name" class="form-control" placeholder="User Name" />
         </div>
         <div class="form-group input-group">
