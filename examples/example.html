@@ -2,50 +2,61 @@
 <html ng-app="HODApp">
 <head>
   <title></title>
+  <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/dist/css/bootstrap.css">
+  <style type="text/css">
+    .clone-options {
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+  </style>
+
   <script type="text/javascript" src="../vendor/angular/angular.js"></script>
   <script type="text/javascript" src="../lib/directive.demo.js"></script>
   <script type="text/javascript">
-    angular.module('HODApp', ['TwForm', 'TwModelClone', 'TwUserProfile'])
+    angular.module('HODApp', ['TwForm', 'TwUserProfile'])
       .controller('FormCtrl', function ($scope) {
-        this.users = {
-          diego: { name: 'Diego Borges', email: 'dborges@thoughtworks.com' },
-          tim:   { name: 'Tim Cochran',  email: 'tim.cochran@thoughtworks.com' },
-          matt:  { name: 'Matt Weems',   email: 'mattw@thoughtworks.com' }
-        };
+        this.form = {};
+        this.lastSavedUser;
+        this.users = [
+          { name: 'Diego Borges', email: 'dborges@thoughtworks.com' },
+          { name: 'Tim Cochran',  email: 'tim.cochran@thoughtworks.com' },
+          { name: 'Matt Weems',   email: 'mattw@thoughtworks.com' }
+        ];
 
         this.saveAsDraft = function (formData) {
           console.log('saving:', formData);
-          $scope.lastSave = angular.copy(formData);
+          this.lastSavedUser = angular.copy(formData);
         };
       });
   </script>
 </head>
-<body ng-controller="FormCtrl as form">
-  <div>
-    <a href="#"
-       tw-clone
-       tw-src-model="form.users.diego"
-       tw-dest-model="user" class="clone">Diego</a>
-    <a href="#"
-       tw-clone
-       tw-src-model="form.users.tim"
-       tw-dest-model="user" class="clone">Tim</a>
-    <a href="#"
-       tw-clone
-       tw-src-model="form.users.matt"
-       tw-dest-model="user" class="clone">Matt</a>
-  </div>
+<body ng-controller="FormCtrl as formCtrl">
+  <div class="container">
+    <div class="clone-options btn-group">
+        <button type="button"
+                class="btn btn-default"
+                ng-repeat="userProfile in formCtrl.users"
+                tw-clone
+                tw-src-model="userProfile"
+                tw-dest-model="formCtrl.form">{{userProfile.name}}</button>
+    </div>
 
-  <form tw-autosave="form.saveAsDraft(user)" ng-model="user">
-    <input type="text" ng-model="user.name" />
-    <input type="text" ng-model="user.email" />
-  </form>
+    <div class="loading"></div>
 
-  <div>
-    <h4>Last Triggered Auto-Save</h4>
-    <tw-user-profile ng-model="lastSave"></tw-user-profile>
-    <tw-user-profile ng-model="lastSave"></tw-user-profile>
-    <tw-user-profile ng-model="lastSave"></tw-user-profile>
+    <div class="form">
+      <form tw-autosave="formCtrl.saveAsDraft(formCtrl.form)" ng-model="formCtrl.form" role="form">
+        <div class="form-group input-group">
+          <span class="input-group-addon glyphicon glyphicon-user"></span>
+          <input type="text" ng-model="formCtrl.form.name" class="form-control" placeholder="User Name" />
+        </div>
+        <div class="form-group input-group">
+          <span class="input-group-addon">@</span>
+          <input type="text" ng-model="formCtrl.form.email" class="form-control" placeholder="User Email" />
+        </div>
+      </form>
+    </div>
+
+    <pre>{{formCtrl.lastSavedUser | json}}</pre>
   </div>
 </body>
 </html>

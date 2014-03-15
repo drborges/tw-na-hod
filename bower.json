@@ -24,6 +24,7 @@
     "angular-mocks": "~1.2.14",
     "sinon-chai": "~2.5.0",
     "sinonjs": "~1.8.2",
-    "angular": "~1.2.14"
+    "angular": "~1.2.14",
+    "bootstrap": "~3.1.1"
   }
 }
