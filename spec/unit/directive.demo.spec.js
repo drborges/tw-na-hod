@@ -143,11 +143,41 @@ describe ('HODApp', function () {
         expect(debouncer.debounce).to.not.have.been.called;
       });
 
-      it ('does not trigger callback if model new value is "undefined"', function () {
+      it ('does not trigger callback if watched model new value is "undefined"', function () {
         var template = '<form tw-autosave="saveAsDraft(formData)" ng-model="formData">Clone</button>';
         $compile(template)($scope);
 
         $scope.formData = undefined;
+        $scope.$digest();
+
+        expect(debouncer.debounce).to.not.have.been.called;
+      });
+
+      it ('does not trigger callback if watched model new value is "undefined"', function () {
+        var template = '<form tw-autosave="saveAsDraft(formData)" ng-model="formData">Clone</button>';
+        $compile(template)($scope);
+
+        $scope.formData = null;
+        $scope.$digest();
+
+        expect(debouncer.debounce).to.not.have.been.called;
+      });
+
+      it ('does not trigger callback if watched model new value is {}', function () {
+        var template = '<form tw-autosave="saveAsDraft(formData)" ng-model="formData">Clone</button>';
+        $compile(template)($scope);
+
+        $scope.formData = {};
+        $scope.$digest();
+
+        expect(debouncer.debounce).to.not.have.been.called;
+      });
+
+      it ('does not trigger callback if watched model new value is []', function () {
+        var template = '<form tw-autosave="saveAsDraft(formData)" ng-model="formData">Clone</button>';
+        $compile(template)($scope);
+
+        $scope.formData = [];
         $scope.$digest();
 
         expect(debouncer.debounce).to.not.have.been.called;
