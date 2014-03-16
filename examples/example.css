@@ -1,0 +1,21 @@
+.clone-options {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.input-addon-positioning-fix {
+  top: 0px;
+}
+.container {
+  width: 688px;
+}
+.header, .autosave-opt {
+  display: inline-block;
+}
+.autosave-opt {
+  position: relative;
+  right: -460px;
+}
+.save-btn {
+  position: relative;
+  right: -560px;
+}
