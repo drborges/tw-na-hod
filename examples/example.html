@@ -11,6 +11,10 @@
     .user-addon {
       top: 0px;
     }
+
+    .container {
+      width: 688px;
+    }
   </style>
 
   <script type="text/javascript" src="../vendor/angular/angular.js"></script>
@@ -19,14 +23,14 @@
     angular.module('HODApp', ['TwForm', 'TwUserProfile'])
       .controller('FormCtrl', function ($scope) {
         this.form = {};
-        this.lastSavedUser;
+        this.drafts = [];
         this.users = [
-          { name: 'Diego Borges',     email: 'dborges@thoughtworks.com' },
-          { name: 'Tim Cochran',      email: 'tcochran@thoughtworks.com' },
-          { name: 'Matt Weems',       email: 'mweems@thoughtworks.com' },
-          { name: 'Dan Lockman',      email: 'dlockman@thoughtworks.com' },
-          { name: 'Igor Lilic',       email: 'ililic@thoughtworks.com' },
-          { name: 'Stephanie Jacobs', email: 'sjacobs@thoughtworks.com' }
+          { name: 'Diego Borges',     email: 'dborges@thoughtworks.com',  role: 'Dev' },
+          { name: 'Tim Cochran',      email: 'tcochran@thoughtworks.com', role: 'Dev' },
+          { name: 'Matt Weems',       email: 'mweems@thoughtworks.com',   role: 'Dev' },
+          { name: 'Dan Lockman',      email: 'dlockman@thoughtworks.com', role: 'Dev' },
+          { name: 'Igor Lilic',       email: 'ililic@thoughtworks.com',   role: 'Dev' },
+          { name: 'Stephanie Jacobs', email: 'sjacobs@thoughtworks.com',  role: 'PM' }
         ];
 
         this.saveAsDraft = function (formData) {
@@ -49,17 +53,24 @@
 
     <div class="loading"></div>
 
-    <div class="form">
-      <form tw-autosave="formCtrl.saveAsDraft(formCtrl.form)" ng-model="formCtrl.form" role="form">
-        <div class="form-group input-group">
-          <span class="input-group-addon glyphicon glyphicon-user user-addon"></span>
-          <input type="text" ng-model="formCtrl.form.name" class="form-control" placeholder="User Name" />
-        </div>
-        <div class="form-group input-group">
-          <span class="input-group-addon">@</span>
-          <input type="text" ng-model="formCtrl.form.email" class="form-control" placeholder="User Email" />
-        </div>
-      </form>
+    <div class="panel panel-default">
+      <div class="panel-heading">User Profile</div>
+      <div class="panel-body">
+        <form tw-autosave="formCtrl.saveAsDraft(formCtrl.form)" ng-model="formCtrl.form">
+          <div class="form-group input-group">
+            <span class="input-group-addon glyphicon glyphicon-user user-addon"></span>
+            <input type="text" ng-model="formCtrl.form.name" class="form-control" placeholder="User Name" />
+          </div>
+          <div class="form-group input-group">
+            <span class="input-group-addon">@</span>
+            <input type="text" ng-model="formCtrl.form.email" class="form-control" placeholder="User Email" />
+          </div>
+          <div class="form-group input-group">
+            <span class="input-group-addon glyphicon glyphicon-th"></span>
+            <input type="text" ng-model="formCtrl.form.role" class="form-control" placeholder="User Role" />
+          </div>
+        </form>
+      </div>
     </div>
 
     <pre>{{formCtrl.lastSavedUser | json}}</pre>
