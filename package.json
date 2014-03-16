@@ -11,11 +11,12 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "tiny-lr": "0.0.5",
     "gulp-shell": "~0.2.4",
     "gulp": "~3.5.5",
     "mocha": "~1.17.1",
-    "mocha-phantomjs": "~3.3.2"
+    "mocha-phantomjs": "~3.3.2",
+    "gulp-plumber": "~0.5.6",
+    "gulp-watch": "~0.5.2"
   },
   "scripts": {
     "test": "",

@@ -1,25 +1,26 @@
 var gulp = require('gulp'),
-    shell = require('gulp-shell'),
-    lr = require('tiny-lr'),
-    server = lr();
+    plumber = require('gulp-plumber'),
+    watch = require('gulp-watch'),
+    shell = require('gulp-shell');
+
+var paths = {
+  specRunner: 'spec/spec.runner.html',
+  appFiles: './{lib,spec}/**/*.js'
+};
+
+var mochaPhantomJS = shell('mocha-phantomjs -R dot ' + paths.specRunner);
 
 gulp.task('default', function () {
   gulp.run('watch');
 });
 
 gulp.task('spec', function () {
-  return gulp.src('spec/spec.runner.html')
-    .pipe(shell('mocha-phantomjs -R dot <%= file.path %>'))
+  gulp.src(paths.specRunner)
+      .pipe(mochaPhantomJS);
 })
 
 gulp.task('watch', function () {
-  server.listen(35729, function (err) {
-    if (err) {
-      return console.log(err)
-    };
-
-    gulp.watch('./{lib,spec}/**/*.js', function() {
-      gulp.run('spec');
-    });
-  });
+  watch({ glob: paths.appFiles })
+    .pipe(plumber())
+    .pipe(mochaPhantomJS);
 });
