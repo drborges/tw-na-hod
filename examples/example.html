@@ -11,6 +11,7 @@
     angular.module('HODApp', ['TwForm', 'TwUserProfile'])
       .controller('FormCtrl', function ($scope) {
         this.autosaveEnabled = true;
+
         this.users = [
           { name: 'Diego Borges',     email: 'dborges@thoughtworks.com',  role: 'Dev' },
           { name: 'Tim Cochran',      email: 'tcochran@thoughtworks.com', role: 'Dev' },
@@ -20,15 +21,17 @@
           { name: 'Stephanie Jacobs', email: 'sjacobs@thoughtworks.com',  role: 'PM' }
         ];
 
+        this.drafts = [];
+
         this.saveAsDraft = function (formData) {
-          console.log('saving:', formData);
-          this.lastSavedUser = angular.copy(formData);
+          this.drafts.push(angular.copy(formData));
         };
       });
   </script>
 </head>
 <body ng-controller="FormCtrl as formCtrl">
   <div class="container">
+
     <div class="clone-options btn-group">
         <button type="button"
                 class="btn btn-default"
@@ -38,37 +41,57 @@
                 tw-dest-model="formCtrl.form">{{userProfile.name}}</button>
     </div>
 
-    <div class="loading"></div>
+    <div class="panels">
+      <div class="panel panel-default form">
+        <div class="panel-heading">
+          <div class="header form"><b>User Profile</b></div>
+          <span class="autosave">Autosave <input type="checkbox" ng-model="formCtrl.autosaveEnabled" /></span>
+        </div>
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <div class="header">User Profile</div>
-        <div class="autosave-opt"><label>Autosave</label> <input type="checkbox" ng-model="formCtrl.autosaveEnabled" /></div>
+        <div class="panel-body">
+          <form tw-autosave="formCtrl.saveAsDraft(formCtrl.form)" tw-if="{{formCtrl.autosaveEnabled}}" ng-model="formCtrl.form">
+
+            <div class="form-group input-group">
+              <span class="input-group-addon glyphicon glyphicon-user input-addon-positioning-fix"></span>
+              <input type="text" ng-model="formCtrl.form.name" class="form-control" placeholder="User Name" />
+            </div>
+
+            <div class="form-group input-group">
+              <span class="input-group-addon">@</span>
+              <input type="text" ng-model="formCtrl.form.email" class="form-control" placeholder="User Email" />
+            </div>
+
+            <div class="form-group input-group">
+              <span class="input-group-addon glyphicon glyphicon-th input-addon-positioning-fix"></span>
+              <input type="text" ng-model="formCtrl.form.role" class="form-control" placeholder="User Role" />
+            </div>
+
+          </form>
+        </div>
+
+        <div class="panel-footer" ng-show="!formCtrl.autosaveEnabled">
+          <button type="button" class="btn btn-default save-btn" ng-click="formCtrl.saveAsDraft(formCtrl.form)">Save</button>
+        </div>
       </div>
 
-      <div class="panel-body">
-        <form tw-autosave="formCtrl.saveAsDraft(formCtrl.form)" tw-if="{{formCtrl.autosaveEnabled}}" ng-model="formCtrl.form">
-          <div class="form-group input-group">
-            <span class="input-group-addon glyphicon glyphicon-user input-addon-positioning-fix"></span>
-            <input type="text" ng-model="formCtrl.form.name" class="form-control" placeholder="User Name" />
-          </div>
-          <div class="form-group input-group">
-            <span class="input-group-addon">@</span>
-            <input type="text" ng-model="formCtrl.form.email" class="form-control" placeholder="User Email" />
-          </div>
-          <div class="form-group input-group">
-            <span class="input-group-addon glyphicon glyphicon-th input-addon-positioning-fix"></span>
-            <input type="text" ng-model="formCtrl.form.role" class="form-control" placeholder="User Role" />
-          </div>
-        </form>
+      <div class="drafts panel panel-default">
+        <div class="panel-heading">
+          <div class="header"><b>Drafts</b></div>
+        </div>
+
+        <div class="panel-body">
+          <ul>
+            <li ng-repeat="draft in formCtrl.drafts">
+              <a href="#"
+                tw-clone
+                tw-src-model="draft"
+                tw-dest-model="formCtrl.form">{{draft.name}}</a>
+            </li>
+          </ul>
+        </div>
       </div>
 
-      <div class="panel-footer" ng-show="!formCtrl.autosaveEnabled">
-        <button type="button" class="btn btn-default save-btn" ng-click="formCtrl.saveAsDraft(formCtrl.form)">Save</button>
-      </div>
     </div>
-
-    <pre ng-show="formCtrl.lastSavedUser">{{formCtrl.lastSavedUser | json}}</pre>
   </div>
 </body>
 </html>

@@ -6,16 +6,19 @@
   top: 0px;
 }
 .container {
-  width: 688px;
+  width: 687px;
 }
-.header, .autosave-opt {
+.header.form {
   display: inline-block;
 }
-.autosave-opt {
-  position: relative;
-  right: -460px;
+.panel.form {
+  float: left;
+  width: 400px;
 }
-.save-btn {
-  position: relative;
-  right: -560px;
+.panel.drafts {
+  float: right;
+  width: 250px;
+}
+.autosave {
+  float: right;
 }
