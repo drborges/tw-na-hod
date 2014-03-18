@@ -2,11 +2,11 @@ describe ('HODApp', function () {
 
 
 
-  describe('TwFunctional', function () {
+  describe('TwUtils', function () {
     describe('Debouncer', function () {
       var Debouncer, $timeout;
 
-      beforeEach(module('TwFunctional'));
+      beforeEach(module('TwUtils'));
       beforeEach(inject(function (_Debouncer_, _$timeout_) {
         Debouncer = _Debouncer_;
         $timeout = _$timeout_;
@@ -36,7 +36,7 @@ describe ('HODApp', function () {
     describe ('twClone', function () {
       var $scope,
           $compile,
-          template = '<button tw-clone tw-src-model="srcModel" tw-dest-model="destModel" tw-on="click">Clone</button>';
+          template = '<button tw-clone tw-clone-from="srcModel" tw-clone-to="destModel" tw-on="click">Clone</button>';
 
       beforeEach(inject(function (_$compile_, $rootScope) {
         $compile = _$compile_;
@@ -47,7 +47,7 @@ describe ('HODApp', function () {
       }));
 
       it ('defaults clone event trigger to "click"', function () {
-        var template = '<button tw-clone tw-src-model="srcModel" tw-dest-model="destModel">Clone</button>';
+        var template = '<button tw-clone tw-clone-from="srcModel" tw-clone-to="destModel">Clone</button>';
         var element = $compile(template)($scope);
 
         element.triggerHandler('click');
@@ -55,7 +55,7 @@ describe ('HODApp', function () {
         expect($scope.destModel).to.deep.equal({ id: 1, message: "cloned message" });
       });
 
-      it ('clones tw-src-model into tw-dest-model on "click" event', function () {
+      it ('clones tw-clone-from into tw-clone-to on "click" event', function () {
         var element = $compile(template)($scope);
 
         expect($scope.destModel).to.deep.equal({ id: 1, message: "initial message" });
@@ -65,8 +65,8 @@ describe ('HODApp', function () {
         expect($scope.destModel).to.deep.equal({ id: 1, message: "cloned message" });
       });
 
-      it ('clones tw-src-model into tw-dest-model on "keyup" event', function () {
-        var template = '<input tw-clone tw-src-model="srcModel" tw-dest-model="destModel" tw-on="keyup">Clone</button>';
+      it ('clones tw-clone-from into tw-clone-to on "keyup" event', function () {
+        var template = '<input tw-clone tw-clone-from="srcModel" tw-clone-to="destModel" tw-on="keyup">Clone</button>';
         var element = $compile(template)($scope);
 
         expect($scope.destModel).to.deep.equal({ id: 1, message: "initial message" });
@@ -86,7 +86,7 @@ describe ('HODApp', function () {
         expect($scope.destModel).to.deep.equal({ id: 1, message: 'cloned message' });
       });
 
-      it ('copies tw-src-model into tw-dest-model when tw-dest-model is not yet defined', function () {
+      it ('copies tw-clone-from into tw-clone-to when tw-clone-to is not yet defined', function () {
         $scope.destModel = undefined;
         var element = $compile(template)($scope);
         element.triggerHandler('click');
@@ -134,7 +134,7 @@ describe ('HODApp', function () {
       });
 
       it ('does not auto saves model if predicate is not met', function () {
-        var template = '<form tw-autosave="saveAsDraft(formData)" tw-if="{{ 1 === 2 }}" ng-model="formData">Clone</button>';
+        var template = '<form tw-autosave="saveAsDraft(formData)" tw-autosave-when="{{ 1 === 2 }}" ng-model="formData">Clone</button>';
         $compile(template)($scope);
 
         $scope.formData.name = 'Diego Borges';
