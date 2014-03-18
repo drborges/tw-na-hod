@@ -33,10 +33,11 @@ describe ('HODApp', function () {
     beforeEach(module('TwForm'));
 
 
+
     describe ('twClone', function () {
-      var $scope,
-          $compile,
-          template = '<button tw-clone tw-clone-from="srcModel" tw-clone-to="destModel" tw-on="click">Clone</button>';
+      var $scope
+        , $compile
+        , template = '<button tw-clone tw-clone-from="srcModel" tw-clone-to="destModel">Clone</button>';
 
       beforeEach(inject(function (_$compile_, $rootScope) {
         $compile = _$compile_;
@@ -47,7 +48,6 @@ describe ('HODApp', function () {
       }));
 
       it ('defaults clone event trigger to "click"', function () {
-        var template = '<button tw-clone tw-clone-from="srcModel" tw-clone-to="destModel">Clone</button>';
         var element = $compile(template)($scope);
 
         element.triggerHandler('click');
@@ -56,6 +56,8 @@ describe ('HODApp', function () {
       });
 
       it ('clones tw-clone-from into tw-clone-to on "click" event', function () {
+        var template = '<button tw-clone tw-clone-from="srcModel" tw-clone-to="destModel" tw-on="click">Clone</button>';
+
         var element = $compile(template)($scope);
 
         expect($scope.destModel).to.deep.equal({ id: 1, message: "initial message" });
@@ -67,6 +69,7 @@ describe ('HODApp', function () {
 
       it ('clones tw-clone-from into tw-clone-to on "keyup" event', function () {
         var template = '<input tw-clone tw-clone-from="srcModel" tw-clone-to="destModel" tw-on="keyup">Clone</button>';
+
         var element = $compile(template)($scope);
 
         expect($scope.destModel).to.deep.equal({ id: 1, message: "initial message" });
@@ -78,6 +81,7 @@ describe ('HODApp', function () {
 
       it ('clones src by value rather than reference', function () {
         var element = $compile(template)($scope);
+
         element.triggerHandler('click');
 
         $scope.srcModel.message = 'updated message';
@@ -88,6 +92,7 @@ describe ('HODApp', function () {
 
       it ('copies tw-clone-from into tw-clone-to when tw-clone-to is not yet defined', function () {
         $scope.destModel = undefined;
+
         var element = $compile(template)($scope);
         element.triggerHandler('click');
 
@@ -103,9 +108,10 @@ describe ('HODApp', function () {
 
 
     describe ('twAutosave', function () {
-      var $scope,
-          $compile,
-          debouncer;
+      var $scope
+        , $compile
+        , debouncer
+        , template = '<form tw-autosave="saveAsDraft(formData)" ng-model="formData"></form>';
 
       beforeEach(module(function($provide) {
         debouncer = { debounce: sinon.spy() };
@@ -121,7 +127,6 @@ describe ('HODApp', function () {
       }));
 
       it ('executes callback with deboucer whenever collection model changes value', function () {
-        var template = '<form tw-autosave="saveAsDraft(formData)" ng-model="formData">Clone</button>';
         var element = $compile(template)($scope);
 
         $scope.formData.name = 'Diego Borges';
@@ -133,8 +138,10 @@ describe ('HODApp', function () {
         );
       });
 
-      it ('does not auto saves model if predicate is not met', function () {
-        var template = '<form tw-autosave="saveAsDraft(formData)" tw-autosave-when="{{ 1 === 2 }}" ng-model="formData">Clone</button>';
+      it ('does not auto saves model when autosave is disabled', function () {
+        var template = '<form tw-autosave="saveAsDraft(formData)" tw-autosave-when="autosaveEnabled" ng-model="formData"></form>';
+
+        $scope.autosaveEnabled = false;
         $compile(template)($scope);
 
         $scope.formData.name = 'Diego Borges';
@@ -143,8 +150,7 @@ describe ('HODApp', function () {
         expect(debouncer.debounce).to.not.have.been.called;
       });
 
-      it ('does not trigger callback if watched model new value is "undefined"', function () {
-        var template = '<form tw-autosave="saveAsDraft(formData)" ng-model="formData">Clone</button>';
+      it ('does not trigger callback if new value of watched model is "undefined"', function () {
         $compile(template)($scope);
 
         $scope.formData = undefined;
@@ -153,8 +159,7 @@ describe ('HODApp', function () {
         expect(debouncer.debounce).to.not.have.been.called;
       });
 
-      it ('does not trigger callback if watched model new value is "undefined"', function () {
-        var template = '<form tw-autosave="saveAsDraft(formData)" ng-model="formData">Clone</button>';
+      it ('does not trigger callback if new value of watched model is "null"', function () {
         $compile(template)($scope);
 
         $scope.formData = null;
@@ -163,8 +168,7 @@ describe ('HODApp', function () {
         expect(debouncer.debounce).to.not.have.been.called;
       });
 
-      it ('does not trigger callback if watched model new value is {}', function () {
-        var template = '<form tw-autosave="saveAsDraft(formData)" ng-model="formData">Clone</button>';
+      it ('does not trigger callback if new value of watched model is an empty object', function () {
         $compile(template)($scope);
 
         $scope.formData = {};
@@ -173,8 +177,7 @@ describe ('HODApp', function () {
         expect(debouncer.debounce).to.not.have.been.called;
       });
 
-      it ('does not trigger callback if watched model new value is []', function () {
-        var template = '<form tw-autosave="saveAsDraft(formData)" ng-model="formData">Clone</button>';
+      it ('does not trigger callback if new value of watched model is an empty array', function () {
         $compile(template)($scope);
 
         $scope.formData = [];
@@ -182,25 +185,6 @@ describe ('HODApp', function () {
 
         expect(debouncer.debounce).to.not.have.been.called;
       });
-    });
-  });
-
-
-
-  describe('twUserProfile', function () {
-    beforeEach(module('TwUserProfile'));
-    beforeEach(function () {
-      $scope.user = {
-        name: 'Diego Borges',
-        email: 'dborges@thoughtworks.com',
-        role: 'Dev',
-        tags: ['angularjs', 'devops', 'CD', 'infra-as-code', 'python', 'nodejs']
-      };
-    });
-
-    xit ('', function () {
-      var template = '<tw-user-profile tw-auto-save-enabled="true" ng-model="user" />';
-      var element = $compile(template)($scope);
     });
   });
 });
