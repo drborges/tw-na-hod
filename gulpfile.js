@@ -1,7 +1,7 @@
-var gulp = require('gulp'),
-    plumber = require('gulp-plumber'),
-    watch = require('gulp-watch'),
-    shell = require('gulp-shell');
+var gulp = require('gulp')
+  , plumber = require('gulp-plumber')
+  , watch = require('gulp-watch')
+  , shell = require('gulp-shell');
 
 var paths = {
   specRunner: 'spec/spec.runner.html',
