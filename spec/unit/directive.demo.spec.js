@@ -10,11 +10,14 @@ describe ('HODApp', function () {
     describe ('twAutosave', function () {
       var template = '<form tw-autosave="save(formData)" tw-autosave-when="autosaveEnabled" ng-model="formData"></form>';
 
-      it ('executes callback whenever watched model changes value');
+      it ('saves the form data whenever it changes');
 
-      it ('executes callback only after changes to the watched model are 300ms dorment');
+      it ('saves the form data only when user stops typing');
 
-      it ('does not auto saves model if predicate is not met');
+      it ('does not auto saves model if autosave is disabled');
+
+
+
 
       it ('does not trigger callback if new value of watched model is "undefined"');
 
@@ -30,15 +33,15 @@ describe ('HODApp', function () {
     describe ('twClone', function () {
       var template = '<button tw-clone tw-clone-from="srcModel" tw-clone-to="destModel">Clone</button>';
 
-      it ('defaults clone event trigger to "click"');
+      it ('clones src data into destination data on button "click"');
 
-      it ('clones src model into dest model on "click" event');
-
-      it ('clones src model into dest model on "keyup" event');
+      it ('clones src data into destination data on button "mouseover"');
 
       it ('clones src by value rather than reference');
 
-      it ('defaults dest model to a copy of src model when dest model is not defined');
+      it ('defaults clone event trigger to button "click"');
+
+      it ('defaults destination data to a copy of src data when destination data is not yet defined');
     });
   });
 
