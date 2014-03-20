@@ -4,12 +4,14 @@ describe ('HODApp', function () {
 
   describe ('TwForm', function () {
     var $scope
-      , $compile;
+      , $compile
+      , $timeout;
 
     beforeEach(module('TwForm'));
 
-    beforeEach(inject(function (_$compile_, $rootScope) {
+    beforeEach(inject(function (_$compile_, _$timeout_, $rootScope) {
       $compile = _$compile_;
+      $timeout = _$timeout_;
       $scope = $rootScope.$new();
     }));
 
@@ -24,11 +26,32 @@ describe ('HODApp', function () {
 
         $scope.formData.message = "Angular Is Not Too Bad...";
         $scope.$digest();
+        //$timeout.flush();
 
         expect($scope.save).to.have.been.calledWith({ message: "Angular Is Not Too Bad..." });
       });
 
-      it ('saves the form data only when user stops typing');
+      it ('saves the form data only when user stops typing', function () {
+        $scope.save = sinon.spy();
+        $scope.formData = { message: "Hello HOD!" }
+
+        $compile(template)($scope);
+
+        $scope.formData.message = "Angular";
+        $scope.$digest();
+        $timeout.flush(100);
+
+        $scope.formData.message = "Angular Is Not";
+        $scope.$digest();
+        $timeout.flush(100);
+
+        $scope.formData.message = "Angular Is Not Too Bad...";
+        $scope.$digest();
+        $timeout.flush();
+
+        expect($scope.save).to.have.been.calledOnce;
+        expect($scope.save).to.have.been.calledWith({ message: "Angular Is Not Too Bad..." });
+      });
 
       it ('does not auto saves model if autosave is disabled');
 
