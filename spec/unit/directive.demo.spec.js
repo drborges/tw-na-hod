@@ -3,14 +3,30 @@ describe ('HODApp', function () {
 
 
   describe ('TwForm', function () {
+    var $scope
+      , $compile;
+
     beforeEach(module('TwForm'));
 
-
+    beforeEach(inject(function (_$compile_, $rootScope) {
+      $compile = _$compile_;
+      $scope = $rootScope.$new();
+    }));
 
     describe ('twAutosave', function () {
-      var template = '<form tw-autosave="save(formData)" tw-autosave-when="autosaveEnabled" ng-model="formData"></form>';
+      var template = '<form tw-autosave="save(formData)" ng-model="formData"></form>';
 
-      it ('saves the form data whenever it changes');
+      it ('saves the form data whenever it changes', function () {
+        $scope.save = sinon.spy();
+        $scope.formData = { message: "Hello HOD!" }
+
+        $compile(template)($scope);
+
+        $scope.formData.message = "Angular Is Not Too Bad...";
+        $scope.$digest();
+
+        expect($scope.save).to.have.been.calledWith({ message: "Angular Is Not Too Bad..." });
+      });
 
       it ('saves the form data only when user stops typing');
 
