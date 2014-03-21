@@ -64,21 +64,73 @@ describe ('HODApp', function () {
 
         $scope.formData.message = "Angular Is Not Too Bad...";
         $scope.$digest();
-        $timeout.flush();
 
         expect($scope.save).to.not.have.been.called;
       });
 
 
+      it ('enables autosave by default', function () {
+        var template = '<form tw-autosave="save(formData)" ng-model="formData"></form>';
 
+        $scope.save = sinon.spy();
+        $scope.formData = { message: "Hello HOD!" };
 
-      it ('does not trigger callback if new value of watched model is "undefined"');
+        $compile(template)($scope);
 
-      it ('does not trigger callback if new value of watched model is "null"');
+        $scope.formData.message = "Angular Is Not Too Bad...";
+        $scope.$digest();
+        $timeout.flush();
 
-      it ('does not trigger callback if new value of watched model is an empty object');
+        expect($scope.save).to.have.been.calledWith({ message: "Angular Is Not Too Bad..." });
+      });
 
-      it ('does not trigger callback if new value of watched model is an empty array');
+      it ('does not trigger callback if new value of watched model is "undefined"', function () {
+        $scope.save = sinon.spy();
+        $scope.formData = { message: "Hello HOD!" };
+
+        $compile(template)($scope);
+
+        $scope.formData = undefined;
+        $scope.$digest();
+
+        expect($scope.save).to.not.have.been.called;
+      });
+
+      it ('does not trigger callback if new value of watched model is "null"', function () {
+        $scope.save = sinon.spy();
+        $scope.formData = { message: "Hello HOD!" };
+
+        $compile(template)($scope);
+
+        $scope.formData = null;
+        $scope.$digest();
+
+        expect($scope.save).to.not.have.been.called;
+      });
+
+      it ('does not trigger callback if new value of watched model is an empty object', function () {
+        $scope.save = sinon.spy();
+        $scope.formData = { message: "Hello HOD!" };
+
+        $compile(template)($scope);
+
+        $scope.formData = {};
+        $scope.$digest();
+
+        expect($scope.save).to.not.have.been.called;
+      });
+
+      it ('does not trigger callback if new value of watched model is an empty array', function () {
+        $scope.save = sinon.spy();
+        $scope.formData = { message: "Hello HOD!" };
+
+        $compile(template)($scope);
+
+        $scope.formData = [];
+        $scope.$digest();
+
+        expect($scope.save).to.not.have.been.called;
+      });
     });
 
 
