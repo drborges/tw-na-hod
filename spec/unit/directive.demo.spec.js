@@ -136,9 +136,17 @@ describe ('HODApp', function () {
 
 
     describe ('twClone', function () {
-      var template = '<button tw-clone tw-clone-from="srcModel" tw-clone-to="destModel">Clone</button>';
+      var template = '<button tw-clone tw-clone-from="srcModel" tw-clone-to="destModel" tw-clone-on="click">Clone</button>';
 
-      it ('clones src data into destination data on button "click"');
+      it ('clones src data into destination data on button "click"', function () {
+        $scope.srcModel = { message: "Hello HOD" };
+        $scope.destModel = { message: "Hello Again HOD (:~)", id: 12 };
+
+        var element = $compile(template)($scope);
+        element.triggerHandler('click');
+
+        expect($scope.destModel).to.deep.equal({ message: "Hello HOD", id: 12 });
+      });
 
       it ('clones src data into destination data on button "mouseover"');
 
