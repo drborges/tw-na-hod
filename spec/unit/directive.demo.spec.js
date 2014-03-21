@@ -16,24 +16,26 @@ describe ('HODApp', function () {
     }));
 
     describe ('twAutosave', function () {
-      var template = '<form tw-autosave="save(formData)" ng-model="formData"></form>';
+      var template = '<form tw-autosave="save(formData)" tw-autosave-when="autosaveEnabled" ng-model="formData"></form>';
 
       it ('saves the form data whenever it changes', function () {
         $scope.save = sinon.spy();
-        $scope.formData = { message: "Hello HOD!" }
+        $scope.formData = { message: "Hello HOD!" };
+        $scope.autosaveEnabled = true;
 
         $compile(template)($scope);
 
         $scope.formData.message = "Angular Is Not Too Bad...";
         $scope.$digest();
-        //$timeout.flush();
+        $timeout.flush();
 
         expect($scope.save).to.have.been.calledWith({ message: "Angular Is Not Too Bad..." });
       });
 
       it ('saves the form data only when user stops typing', function () {
         $scope.save = sinon.spy();
-        $scope.formData = { message: "Hello HOD!" }
+        $scope.formData = { message: "Hello HOD!" };
+        $scope.autosaveEnabled = true;
 
         $compile(template)($scope);
 
@@ -53,7 +55,19 @@ describe ('HODApp', function () {
         expect($scope.save).to.have.been.calledWith({ message: "Angular Is Not Too Bad..." });
       });
 
-      it ('does not auto saves model if autosave is disabled');
+      it ('does not auto saves model if autosave is disabled', function() {
+        $scope.save = sinon.spy();
+        $scope.formData = { message: "Hello HOD!" };
+        $scope.autosaveEnabled = false;
+
+        $compile(template)($scope);
+
+        $scope.formData.message = "Angular Is Not Too Bad...";
+        $scope.$digest();
+        $timeout.flush();
+
+        expect($scope.save).to.not.have.been.called;
+      });
 
 
 
