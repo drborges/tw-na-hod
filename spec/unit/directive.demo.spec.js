@@ -148,21 +148,57 @@ describe ('HODApp', function () {
         expect($scope.destModel).to.deep.equal({ message: "Hello HOD", id: 12 });
       });
 
-      it ('clones src data into destination data on button "mouseover"');
+      it ('clones src data into destination data on button "mouseover"', function () {
+        var template = '<button tw-clone tw-clone-from="srcModel" tw-clone-to="destModel" tw-clone-on="mouseover">Clone</button>';
 
-      it ('clones src by value rather than reference');
+        $scope.srcModel = { message: "Hello HOD" };
+        $scope.destModel = { message: "Hello Again HOD (:~)", id: 12 };
 
-      it ('defaults clone event trigger to button "click"');
+        var element = $compile(template)($scope);
+        element.triggerHandler('mouseover');
 
-      it ('defaults destination data to a copy of src data when destination data is not yet defined');
-    });
-  });
+        expect($scope.destModel).to.deep.equal({ message: "Hello HOD", id: 12 });
+      });
 
+      it ('clones src by value rather than reference', function () {
+        $scope.srcModel = { message: "Hello HOD" };
+        $scope.destModel = { message: "Hello Again HOD (:~)", id: 12 };
 
+        var element = $compile(template)($scope);
+        element.triggerHandler('click');
 
-  describe('TwUtils', function () {
-    describe('Debouncer', function () {
-      it ('debounces callback for multiple calls within 300 ms');
+        $scope.srcModel.message = "updated message";
+        $scope.$digest();
+
+        expect($scope.destModel).to.deep.equal({ id: 12, message: 'Hello HOD' });
+      });
+
+      it ('defaults clone event trigger to button "click"', function () {
+        var template = '<button tw-clone tw-clone-from="srcModel" tw-clone-to="destModel">Clone</button>';
+
+        $scope.srcModel = { message: "Hello HOD" };
+        $scope.destModel = { message: "Hello Again HOD (:~)", id: 12 };
+
+        var element = $compile(template)($scope);
+        element.triggerHandler('click');
+
+        expect($scope.destModel).to.deep.equal({ message: "Hello HOD", id: 12 });
+      });
+
+      it ('defaults destination data to a copy of src data when destination data is not yet defined', function () {
+        $scope.srcModel = { message: "Hello HOD" };
+        $scope.destModel = undefined;
+
+        var element = $compile(template)($scope);
+        element.triggerHandler('click');
+
+        expect($scope.destModel).to.deep.equal({ message: 'Hello HOD' });
+
+        $scope.srcModel.message = 'updated message';
+        $scope.$digest();
+
+        expect($scope.destModel).to.deep.equal({ message: 'Hello HOD' });
+      });
     });
   });
 });
